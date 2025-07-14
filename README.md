@@ -6,6 +6,8 @@
 [![Linux platform](https://img.shields.io/badge/platform-linux--64-orange.svg)](https://releases.ubuntu.com/22.04/)
 [![License](https://img.shields.io/badge/license-Apache2.0-yellow.svg)](https://opensource.org/license/apache-2-0)
 
+![ISAAC_FFW_RL_reach_train (1)](https://github.com/user-attachments/assets/5ca984e9-acbb-4505-95d8-a2b04d3b3980)
+
 ## Overview
 
 **robotis_lab** is a research-oriented repository based on [Isaac Lab](https://isaac-sim.github.io/IsaacLab), designed to enable reinforcement learning (RL) and imitation learning (IL) experiments using Robotis robots in simulation.
@@ -29,7 +31,8 @@ This project provides simulation environments, configuration tools, and task def
 
   ```bash
   cd robotis_lab
-  python -m pip install -e source/robotis_lab
+  python -m pip install -e source/robotis_lab<img width="1280" height="720" alt="썸네일" src="https://github.com/user-attachments/assets/8e25d789-d967-45cb-8fa8-fbdfbc8b1642" />
+
   ```
 
 - Verify that the extension is correctly installed by running the following command to print all the available environments in the extension:
@@ -39,7 +42,6 @@ This project provides simulation environments, configuration tools, and task def
   ```
 
 ## Try examples
-![ISAAC_FFW_RL_reach_train (1)](https://github.com/user-attachments/assets/679ce5ce-eef9-4f55-bc03-55f41ca77af9)
 
 > [!NOTE]
 > If you want to control a **SINGLE ROBOT** with the keyboard during playback, add `--keyboard` at the end of the play script.
