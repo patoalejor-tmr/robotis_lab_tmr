@@ -6,7 +6,7 @@
 from isaaclab.envs.mimic_env_cfg import MimicEnvCfg, SubTaskConfig
 from isaaclab.utils import configclass
 
-from robotis_lab.tasks.manager_based.OMY.stack.ik_rel_env_cfg import OMYCubeStackEnvCfg
+from .ik_rel_env_cfg import OMYCubeStackEnvCfg
 
 @configclass
 class OMYCubeStackIKRelMimicEnvCfg(OMYCubeStackEnvCfg, MimicEnvCfg):
