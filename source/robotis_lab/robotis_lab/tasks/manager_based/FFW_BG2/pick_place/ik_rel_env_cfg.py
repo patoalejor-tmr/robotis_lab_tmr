@@ -37,11 +37,11 @@ class PickPlaceFFWBG2EnvCfg(joint_pose_env_cfg.PickPlaceFFWBG2EnvCfg):
         # post init of parent
         super().__post_init__()
 
-        # Set OMY as robot
+        # Set FFW BG2 as robot
         # We switch here to a stiffer PD controller for IK tracking to be better.
         self.scene.robot = FFW_BG2_PICK_PLACE_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
 
-        # Set actions for the specific robot type (OMY)
+        # Set actions for the specific robot type (FFW BG2)
         self.actions.arm_action = DifferentialInverseKinematicsActionCfg(
             asset_name="robot",
             joint_names=["arm_r_joint[1-7]"],
