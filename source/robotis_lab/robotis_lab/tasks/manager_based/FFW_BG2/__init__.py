@@ -23,3 +23,4 @@
 
 import gymnasium as gym
 from .reach import *  # noqa
+from .pick_place import *  # noqa
