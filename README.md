@@ -30,8 +30,7 @@ This project provides simulation environments, configuration tools, and task def
 - Install the robotis_lab Package
 
   ```bash
-  cd robotis_lab
-  python -m pip install -e source/robotis_lab<img width="1280" height="720" alt="썸네일" src="https://github.com/user-attachments/assets/8e25d789-d967-45cb-8fa8-fbdfbc8b1642" />
+  cd robotis_lab && python -m pip install -e source/robotis_lab
 
   ```
 
