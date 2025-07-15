@@ -31,8 +31,6 @@ from isaaclab.sensors import CameraCfg
 
 from . import mdp
 
-from robotis_lab.assets import FFW_BG2  # isort: skip
-
 
 ##
 # Scene definition
@@ -52,25 +50,25 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
     table = AssetBaseCfg(
         prim_path="/World/envs/env_.*/PackingTable",
         init_state=AssetBaseCfg.InitialStateCfg(
-            pos=[0.60, -0.4, 0.0],
+            pos=[0.70, 0.0, 0.0],
             rot = [-0.70710678, 0.0, 0.0, 0.70710678]
         ),
         spawn=UsdFileCfg(
             usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/PackingTable/packing_table.usd",
             rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
-            scale=(0.8, 0.8, 0.8),
+            scale=(1.0, 1.0, 1.0),
         ),
     )
 
     # Object
     object = RigidObjectCfg(
         prim_path="{ENV_REGEX_NS}/Object",
-        init_state=RigidObjectCfg.InitialStateCfg(pos=[0.50, -0.30, 0.8413], rot=[1, 0, 0, 0]),
+        init_state=RigidObjectCfg.InitialStateCfg(pos=[0.60, 0.0, 1.1413], rot=[1, 0, 0, 0]),
         spawn=sim_utils.CylinderCfg(
             radius=0.018,
             height=0.35,
             rigid_props=sim_utils.RigidBodyPropertiesCfg(),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.3),
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.1, density=30.0),
             collision_props=sim_utils.CollisionPropertiesCfg(),
             visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.15, 0.15, 0.15), metallic=1.0),
             physics_material=sim_utils.RigidBodyMaterialCfg(

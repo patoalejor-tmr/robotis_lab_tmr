@@ -99,7 +99,6 @@ FFW_BG2_CFG = ArticulationCfg(
 
 FFW_BG2_PICK_PLACE_CFG = FFW_BG2_CFG.replace(
     spawn=FFW_BG2_CFG.spawn,
-    actuators=FFW_BG2_CFG.actuators,
     init_state=ArticulationCfg.InitialStateCfg(
         joint_pos={
             # Lift joint
@@ -121,8 +120,51 @@ FFW_BG2_PICK_PLACE_CFG = FFW_BG2_CFG.replace(
             **{f"gripper_r_joint{i+1}": 0.0 for i in range(4)},
 
             # Head joints
-            "head_joint1": 0.60,
-            "head_joint2": -0.17,
+            "head_joint1": 0.695,
+            "head_joint2": -0.35,
         }
     ),
+    actuators={
+        # Actuator for vertical lift joint
+        "lift": ImplicitActuatorCfg(
+            joint_names_expr=["lift_joint"],
+            velocity_limit_sim=1.0,
+            effort_limit_sim=10000.0,
+            stiffness=10000.0,
+            damping=1000.0,
+        ),
+
+        # Actuators for both arms
+        "arms": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "arm_l_joint[1-7]",
+                "arm_r_joint[1-7]",
+            ],
+            velocity_limit_sim=10.0,
+            effort_limit_sim=10000.0,
+            stiffness=400.0,
+            damping=80.0,
+        ),
+
+        # Actuators for grippers
+        "grippers": ImplicitActuatorCfg(
+            joint_names_expr=[
+                "gripper_l_joint[1-4]",
+                "gripper_r_joint[1-4]",
+            ],
+            velocity_limit_sim=5.0,
+            effort_limit_sim=100.0,
+            stiffness=80.0,
+            damping=10.0,
+        ),
+
+        # Actuators for head joints
+        "head": ImplicitActuatorCfg(
+            joint_names_expr=["head_joint1", "head_joint2"],
+            velocity_limit_sim=5.0,
+            effort_limit_sim=1000.0,
+            stiffness=1e6,
+            damping=1e4,
+        ),
+    }
 )

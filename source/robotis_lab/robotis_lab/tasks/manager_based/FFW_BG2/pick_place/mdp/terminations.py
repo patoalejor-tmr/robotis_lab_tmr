@@ -29,12 +29,12 @@ if TYPE_CHECKING:
 def task_done(
     env: ManagerBasedRLEnv,
     object_cfg: SceneEntityCfg = SceneEntityCfg("object"),
-    right_wrist_max_x: float = 0.26,
-    min_x: float = 0.35,
-    max_x: float = 0.65,
-    min_y: float = -1.10,
-    max_y: float = -0.60,
-    min_height: float = 1.0,
+    right_wrist_max_x: float = 0.2,
+    min_x: float = 0.4,
+    max_x: float = 0.8,
+    min_y: float = -0.95,
+    max_y: float = -0.30,
+    min_height: float = 1.2,
     min_vel: float = 0.20,
 ) -> torch.Tensor:
     """Determine if the object placement task is complete.
@@ -72,6 +72,8 @@ def task_done(
     robot_body_pos_w = env.scene["robot"].data.body_pos_w
     right_eef_idx = env.scene["robot"].data.body_names.index("arm_r_link7")
     right_wrist_x = robot_body_pos_w[:, right_eef_idx, 0] - env.scene.env_origins[:, 0]
+
+    print(f"Wheel X: {wheel_x}, Wheel Y: {wheel_y}, Wheel Height: {wheel_height}, Right Wrist X: {right_wrist_x}")
 
     # Check all success conditions and combine with logical AND
     done = wheel_x < max_x

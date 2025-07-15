@@ -44,24 +44,15 @@ class EventCfg:
     """Configuration for events."""
 
     init_ffw_bg2_pose = EventTerm(
-        func=ffw_bg2_pick_place_events.set_default_joint_pose,
+        func=ffw_bg2_pick_place_events.set_joint_pose_from_cfg,
         mode="startup",
-        params={
-            "default_pose": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                             0.0, 0.0, 0.0, 0.0, 0.0],
-        },
     )
 
-    randomize_ffw_bg2_joint_state = EventTerm(
-        func=ffw_bg2_pick_place_events.randomize_joint_by_gaussian_offset,
+    init_ffw_bg2_pose = EventTerm(
+        func=ffw_bg2_pick_place_events.set_joint_pose_from_cfg,
         mode="reset",
-        params={
-            "mean": 0.0,
-            "std": 0.02,
-            "asset_cfg": SceneEntityCfg("robot"),
-        },
     )
+
 
 @configclass
 class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
@@ -104,27 +95,27 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
         self.scene.right_wrist_cam = CameraCfg(
             prim_path="{ENV_REGEX_NS}/Robot/ffw_bg2_follower/arm_r_link7/camera_r_bottom_screw_frame/camera_r_link/right_wrist_cam",
             update_period=0.0,
-            height=84,
-            width=84,
+            height=224,
+            width=224,
             data_types=["rgb", "distance_to_image_plane"],
             spawn=sim_utils.PinholeCameraCfg(
                 focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
             ),
             offset=CameraCfg.OffsetCfg(
-                pos=(0.0, 0.0, 0.0), rot=(0.5, 0.5, 0.5, 0.5), convention="isaac"
+                pos=(-0.08, 0.0, 0.0), rot=(0.5, -0.5, -0.5, 0.5), convention="isaac"
             ),
         )
         self.scene.head_cam = CameraCfg(
             prim_path="{ENV_REGEX_NS}/Robot/ffw_bg2_follower/head_link2/head_cam",
             update_period=0.0,
-            height=84,
-            width=84,
+            height=224,
+            width=224,
             data_types=["rgb", "distance_to_image_plane"],
             spawn=sim_utils.PinholeCameraCfg(
                 focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
             ),
             offset=CameraCfg.OffsetCfg(
-                pos=(0.20, 0.0, 0.0), rot=(0.5, -0.5, -0.5, -0.5), convention="isaac"
+                pos=(-0.03, 0.04, 0.0), rot=(0.5, -0.5, -0.5, 0.5), convention="isaac"
             ),
         )
 

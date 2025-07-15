@@ -44,6 +44,24 @@ def set_default_joint_pose(
     asset = env.scene[asset_cfg.name]
     asset.data.default_joint_pos = torch.tensor(default_pose, device=env.device).repeat(env.num_envs, 1)
 
+def set_joint_pose_from_cfg(
+    env: ManagerBasedEnv,
+    env_ids: torch.Tensor,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+):
+    asset = env.scene[asset_cfg.name]
+    joint_names = asset.data.joint_names
+    cfg_joint_pos = asset.cfg.init_state.joint_pos
+
+    default_pose = [cfg_joint_pos[name] for name in joint_names]
+    joint_pos = torch.tensor(default_pose, device=env.device).repeat(env.num_envs, 1)
+    joint_vel = torch.zeros_like(joint_pos)
+
+    asset.data.default_joint_pos = joint_pos
+
+    asset.set_joint_position_target(joint_pos, env_ids=env_ids)
+    asset.set_joint_velocity_target(joint_vel, env_ids=env_ids)
+    asset.write_joint_state_to_sim(joint_pos, joint_vel, env_ids=env_ids)
 
 def randomize_joint_by_gaussian_offset(
     env: ManagerBasedEnv,
