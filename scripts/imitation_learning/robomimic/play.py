@@ -72,6 +72,7 @@ if args_cli.enable_pinocchio:
 from isaaclab_tasks.utils import parse_env_cfg
 
 import robotis_lab  # noqa: F401
+import robotis_lab.mimic.envs
 
 def rollout(policy, env, success_term, horizon, device):
     """Perform a single rollout of the policy in the environment.
