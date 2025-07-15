@@ -73,8 +73,6 @@ def task_done(
     right_eef_idx = env.scene["robot"].data.body_names.index("arm_r_link7")
     right_wrist_x = robot_body_pos_w[:, right_eef_idx, 0] - env.scene.env_origins[:, 0]
 
-    print(f"Wheel X: {wheel_x}, Wheel Y: {wheel_y}, Wheel Height: {wheel_height}, Right Wrist X: {right_wrist_x}")
-
     # Check all success conditions and combine with logical AND
     done = wheel_x < max_x
     done = torch.logical_and(done, wheel_x > min_x)
