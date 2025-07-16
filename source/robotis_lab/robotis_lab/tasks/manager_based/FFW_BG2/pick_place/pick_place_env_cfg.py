@@ -46,7 +46,7 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
     table = AssetBaseCfg(
         prim_path="/World/envs/env_.*/PackingTable",
         init_state=AssetBaseCfg.InitialStateCfg(
-            pos=[0.70, 0.0, 0.0],
+            pos=[0.70, -0.1, 0.0],
             rot = [-0.70710678, 0.0, 0.0, 0.70710678]
         ),
         spawn=UsdFileCfg(
@@ -66,7 +66,7 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
             rigid_props=sim_utils.RigidBodyPropertiesCfg(),
             mass_props=sim_utils.MassPropertiesCfg(mass=0.1, density=30.0),
             collision_props=sim_utils.CollisionPropertiesCfg(),
-            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.15, 0.15, 0.15), metallic=1.0),
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0), metallic=1.0),
             physics_material=sim_utils.RigidBodyMaterialCfg(
                 friction_combine_mode="max",
                 restitution_combine_mode="min",
@@ -152,6 +152,8 @@ class TerminationsCfg:
     object_dropping = DoneTerm(
         func=mdp.root_height_below_minimum, params={"minimum_height": 0.5, "asset_cfg": SceneEntityCfg("object")}
     )
+
+    object_fallen_over = DoneTerm(func=mdp.object_fallen_over)
 
     success = DoneTerm(func=mdp.task_done)
 

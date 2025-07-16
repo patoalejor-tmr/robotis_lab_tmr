@@ -21,6 +21,7 @@
 
 import isaaclab.sim as sim_utils
 from isaaclab.managers import EventTermCfg as EventTerm
+from isaaclab.managers import SceneEntityCfg
 from isaaclab.sensors import FrameTransformerCfg
 from isaaclab.sensors.frame_transformer.frame_transformer_cfg import OffsetCfg
 from isaaclab.utils import configclass
@@ -48,6 +49,15 @@ class EventCfg:
         mode="reset",
     )
 
+    randomize_object_position = EventTerm(
+        func=ffw_bg2_pick_place_events.randomize_object_pose,
+        mode="reset",
+        params={
+            "pose_range": {"x": (0.5, 0.7), "y": (-0.20, 0.0), "z": (1.1413, 1.1413)},
+            "min_separation": 0.12,
+            "asset_cfgs": [SceneEntityCfg("object")],
+        },
+    )
 
 @configclass
 class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
@@ -94,7 +104,7 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
             width=224,
             data_types=["rgb"],
             spawn=sim_utils.PinholeCameraCfg(
-                focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
+                focal_length=18.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
             ),
             offset=CameraCfg.OffsetCfg(
                 pos=(-0.08, 0.0, 0.0), rot=(0.5, -0.5, -0.5, 0.5), convention="isaac"
@@ -107,7 +117,7 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
             width=224,
             data_types=["rgb", "distance_to_image_plane"],
             spawn=sim_utils.PinholeCameraCfg(
-                focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
+                focal_length=12.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
             ),
             offset=CameraCfg.OffsetCfg(
                 pos=(-0.03, 0.04, 0.0), rot=(0.5, 0.5, -0.5, -0.5), convention="isaac"

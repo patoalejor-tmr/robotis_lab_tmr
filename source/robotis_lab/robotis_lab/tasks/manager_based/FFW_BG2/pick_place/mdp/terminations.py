@@ -32,8 +32,8 @@ def task_done(
     right_wrist_max_x: float = 0.2,
     min_x: float = 0.4,
     max_x: float = 0.8,
-    min_y: float = -0.95,
-    max_y: float = -0.30,
+    min_y: float = -1.05,
+    max_y: float = -0.40,
     min_height: float = 1.2,
     min_vel: float = 0.20,
 ) -> torch.Tensor:
@@ -85,3 +85,23 @@ def task_done(
     done = torch.logical_and(done, wheel_vel[:, 2] < min_vel)
 
     return done
+
+def object_fallen_over(
+    env: ManagerBasedRLEnv,
+    object_cfg: SceneEntityCfg = SceneEntityCfg("object"),
+    max_y: float = -0.40,
+    min_height: float = 1.02,
+) -> torch.Tensor:
+
+    # Get object entity from the scene
+    object: RigidObject = env.scene[object_cfg.name]
+
+    # Extract wheel position relative to environment origin
+    wheel_y = object.data.root_pos_w[:, 1] - env.scene.env_origins[:, 1]
+    wheel_height = object.data.root_pos_w[:, 2] - env.scene.env_origins[:, 2]
+
+    # Check all success conditions and combine with logical AND
+    fail = wheel_y > max_y
+    fail = torch.logical_and(fail, wheel_height < min_height)
+
+    return fail
