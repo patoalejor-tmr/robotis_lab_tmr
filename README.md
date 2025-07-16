@@ -135,7 +135,7 @@ We provide a Sim2Real pipeline to deploy policies trained in Isaac Lab simulatio
 <details>
 <summary>🎥 Show demo video</summary>
 
-
+https://github.com/user-attachments/assets/6c27bdb1-3a6b-4686-a546-8f14f01e4abe
 
 </details>
 
@@ -153,9 +153,8 @@ Prerequisites
 - ROS 2 Jazzy installed and sourced.
 - Robot hardware must be ready and controllable via the joint trajectory interface.
 
-Run Sim2Real Reach Policy on OMY
 
-OMY Reach task
+Run Sim2Real Reach Policy on OMY
 
 ```bash
 # Train
