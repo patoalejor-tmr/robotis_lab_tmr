@@ -23,7 +23,7 @@ from isaaclab.controllers.differential_ik_cfg import DifferentialIKControllerCfg
 from isaaclab.envs.mdp.actions.actions_cfg import DifferentialInverseKinematicsActionCfg
 from isaaclab.utils import configclass
 
-from . import joint_pose_env_cfg
+from . import joint_pos_env_cfg
 
 ##
 # Pre-defined configs
@@ -32,7 +32,7 @@ from robotis_lab.assets.FFW_BG2 import FFW_BG2_PICK_PLACE_CFG  # isort: skip
 
 
 @configclass
-class PickPlaceFFWBG2EnvCfg(joint_pose_env_cfg.PickPlaceFFWBG2EnvCfg):
+class PickPlaceFFWBG2EnvCfg(joint_pos_env_cfg.PickPlaceFFWBG2EnvCfg):
     def __post_init__(self):
         # post init of parent
         super().__post_init__()

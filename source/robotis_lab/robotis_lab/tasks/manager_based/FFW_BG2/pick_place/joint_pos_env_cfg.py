@@ -92,7 +92,7 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
             update_period=0.0,
             height=224,
             width=224,
-            data_types=["rgb", "distance_to_image_plane"],
+            data_types=["rgb"],
             spawn=sim_utils.PinholeCameraCfg(
                 focal_length=24.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
             ),

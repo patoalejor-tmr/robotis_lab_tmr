@@ -9,7 +9,7 @@ from isaaclab.utils import configclass
 from .ik_rel_env_cfg import OMYCubeStackEnvCfg
 
 @configclass
-class OMYCubeStackIKRelMimicEnvCfg(OMYCubeStackEnvCfg, MimicEnvCfg):
+class OMYStackMimicEnvCfg(OMYCubeStackEnvCfg, MimicEnvCfg):
     """
     Isaac Lab Mimic environment config class for OMY Cube Stack IK Rel env.
     """

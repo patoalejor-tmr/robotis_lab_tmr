@@ -10,7 +10,7 @@ import isaaclab.utils.math as PoseUtils
 from isaaclab.envs import ManagerBasedRLMimicEnv
 
 
-class OMYCubeStackIKRelMimicEnv(ManagerBasedRLMimicEnv):
+class OMYStackMimicEnv(ManagerBasedRLMimicEnv):
     """
     Isaac Lab Mimic environment wrapper class for OMY Cube Stack IK Rel env.
     """
