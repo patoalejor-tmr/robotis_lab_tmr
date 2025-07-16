@@ -161,7 +161,7 @@ Run Sim2Real Reach Policy on OMY
 python scripts/reinforcement_learning/rsl_rl/train.py --task RobotisLab-Reach-OMY-v0 --num_envs=512 --headless
 
 # Sim2Real
-python3 scripts/sim2real/OMY/reach/run_omy_reach.py --model_dir=<2025-07-10_08-47-09>
+python scripts/sim2real/OMY/reach/run_omy_reach.py --model_dir=<2025-07-10_08-47-09>
 ```
 
 Replace <2025-07-10_08-47-09> with the actual timestamp folder name under:

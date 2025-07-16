@@ -48,9 +48,9 @@ class PolicyExecutor():
             return default
 
     def load_policy_model(self, policy_model_path: str) -> None:
-        with open(policy_model_path, "rb") as f:
-            buffer = io.BytesIO(f.read())
-        self.policy = torch.jit.load(buffer)
+        if not os.path.exists(policy_model_path):
+            raise FileNotFoundError(f"Policy model file not found: {policy_model_path}")
+        self.policy = torch.jit.load(policy_model_path)
 
     def update_action(self, obs: np.ndarray) -> np.ndarray:
         with torch.no_grad():

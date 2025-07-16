@@ -108,7 +108,7 @@ class OMYReachPolicy(Node, PolicyExecutor):
     def create_trajectory_command(self, joint_positions: np.ndarray) -> JointTrajectory:
         """Creates a JointTrajectory message from joint positions."""
         point = JointTrajectoryPoint()
-        point.positions = joint_positions
+        point.positions = joint_positions.tolist()
         point.time_from_start = Duration(
             sec=0,
             nanosec=int(self.cfg.trajectory_time_from_start * 1e9)
