@@ -66,40 +66,40 @@ OMY Reach task
 
 ```bash
 # Train
-python scripts/reinforcement_learning/skrl/train.py --task RobotisLab-Reach-OMY-v0 --num_envs=512 --headless
+python scripts/reinforcement_learning/rsl_rl/train.py --task RobotisLab-Reach-OMY-v0 --num_envs=512 --headless
 
 # Play
-python scripts/reinforcement_learning/skrl/play.py --task RobotisLab-Reach-OMY-v0 --num_envs=16
+python scripts/reinforcement_learning/rsl_rl/play.py --task RobotisLab-Reach-OMY-v0 --num_envs=16
 ```
 
 OMY Lift task
 
 ```bash
 # Train
-python scripts/reinforcement_learning/skrl/train.py --task RobotisLab-Lift-Cube-OMY-v0 --num_envs=512 --headless
+python scripts/reinforcement_learning/rsl_rl/train.py --task RobotisLab-Lift-Cube-OMY-v0 --num_envs=512 --headless
 
 # Play
-python scripts/reinforcement_learning/skrl/play.py --task RobotisLab-Lift-Cube-OMY-v0 --num_envs=16
+python scripts/reinforcement_learning/rsl_rl/play.py --task RobotisLab-Lift-Cube-OMY-v0 --num_envs=16
 ```
 
 OMY Open drawer task
 
 ```bash
 # Train
-python scripts/reinforcement_learning/skrl/train.py --task RobotisLab-Open-Drawer-OMY-v0 --num_envs=512 --headless
+python scripts/reinforcement_learning/rsl_rl/train.py --task RobotisLab-Open-Drawer-OMY-v0 --num_envs=512 --headless
 
 # Play
-python scripts/reinforcement_learning/skrl/play.py --task RobotisLab-Open-Drawer-OMY-v0 --num_envs=16
+python scripts/reinforcement_learning/rsl_rl/play.py --task RobotisLab-Open-Drawer-OMY-v0 --num_envs=16
 ```
 
 FFW-BG2 reach task
 
 ```bash
 # Train
-python scripts/reinforcement_learning/skrl/train.py --task RobotisLab-Reach-FFW-BG2-v0 --num_envs=512 --headless
+python scripts/reinforcement_learning/rsl_rl/train.py --task RobotisLab-Reach-FFW-BG2-v0 --num_envs=512 --headless
 
 # Play
-python scripts/reinforcement_learning/skrl/play.py --task RobotisLab-Reach-FFW-BG2-v0 --num_envs=16
+python scripts/reinforcement_learning/rsl_rl/play.py --task RobotisLab-Reach-FFW-BG2-v0 --num_envs=16
 ```
 
 ### Imitation learning
@@ -127,4 +127,48 @@ python scripts/imitation_learning/robomimic/train.py \
 python scripts/imitation_learning/robomimic/play.py \
 --device cuda --task RobotisLab-Stack-Cube-OMY-IK-Rel-v0 --num_rollouts 50 \
 --checkpoint /PATH/TO/desired_model_checkpoint.pth
+```
+
+## Sim2Real Deployment
+We provide a Sim2Real pipeline to deploy policies trained in Isaac Lab simulation directly onto the real OMY robot.
+
+<details>
+<summary>🎥 Show demo video</summary>
+
+
+
+</details>
+
+> [!IMPORTANT]
+> More on OMY Hardware Setup:
+> For details on how to set up and operate the OMY robot, please refer to the [open_manipulator repo](https://github.com/ROBOTIS-GIT/open_manipulator.git)
+
+In this pipeline:
+- The trained policy (exported as a TorchScript .pt file) is executed on the real robot using ROS 2.
+- The robot receives joint state feedback and sends joint trajectory commands via a ROS 2 control interface.
+- A TF frame for the sampled target pose is broadcast for visualization and debugging.
+
+Prerequisites
+- A trained policy (under logs/rsl_rl/reach_omy/<TIMESTAMP>).
+- ROS 2 Jazzy installed and sourced.
+- Robot hardware must be ready and controllable via the joint trajectory interface.
+
+Run Sim2Real Reach Policy on OMY
+
+OMY Reach task
+
+```bash
+# Train
+python scripts/reinforcement_learning/rsl_rl/train.py --task RobotisLab-Reach-OMY-v0 --num_envs=512 --headless
+
+# Play
+python scripts/reinforcement_learning/rsl_rl/play.py --task RobotisLab-Reach-OMY-v0 --num_envs=16
+
+# Sim2Real
+python3 scripts/sim2real/OMY/reach/run_omy_reach.py --model_dir=<2025-07-10_08-47-09>
+```
+
+Replace <2025-07-10_08-47-09> with the actual timestamp folder name under:
+```bash
+logs/rsl_rl/reach_omy/
 ```
