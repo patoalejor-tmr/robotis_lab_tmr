@@ -59,9 +59,12 @@ def set_joint_pose_from_cfg(
 
     asset.data.default_joint_pos = joint_pos
 
-    asset.set_joint_position_target(joint_pos, env_ids=env_ids)
-    asset.set_joint_velocity_target(joint_vel, env_ids=env_ids)
-    asset.write_joint_state_to_sim(joint_pos, joint_vel, env_ids=env_ids)
+    joint_pos_per_env = joint_pos[env_ids]
+    joint_vel_per_env = joint_vel[env_ids]
+
+    asset.set_joint_position_target(joint_pos_per_env, env_ids=env_ids)
+    asset.set_joint_velocity_target(joint_vel_per_env, env_ids=env_ids)
+    asset.write_joint_state_to_sim(joint_pos_per_env, joint_vel_per_env, env_ids=env_ids)
 
 def randomize_joint_by_gaussian_offset(
     env: ManagerBasedEnv,

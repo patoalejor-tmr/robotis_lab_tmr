@@ -114,6 +114,8 @@ class ObservationsCfg:
         joint_pos = ObsTerm(func=mdp.joint_pos_rel)
         joint_vel = ObsTerm(func=mdp.joint_vel_rel)
         gripper_pos = ObsTerm(func=mdp.gripper_pos)
+        eef_pos = ObsTerm(func=mdp.ee_frame_pos)
+        eef_quat = ObsTerm(func=mdp.ee_frame_quat)
 
         right_wrist_cam = ObsTerm(
             func=mdp.image,
