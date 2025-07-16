@@ -160,9 +160,6 @@ Run Sim2Real Reach Policy on OMY
 # Train
 python scripts/reinforcement_learning/rsl_rl/train.py --task RobotisLab-Reach-OMY-v0 --num_envs=512 --headless
 
-# Play
-python scripts/reinforcement_learning/rsl_rl/play.py --task RobotisLab-Reach-OMY-v0 --num_envs=16
-
 # Sim2Real
 python3 scripts/sim2real/OMY/reach/run_omy_reach.py --model_dir=<2025-07-10_08-47-09>
 ```
