@@ -36,7 +36,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.
 from sim2real.utils.policy_executor import PolicyExecutor
 
 
-class ReachPolicy(Node, PolicyExecutor):
+class OMYReachPolicy(Node, PolicyExecutor):
     """ROS2 node for executing a reach policy on the OMY robot."""
 
     def __init__(self, model_dir: str):
@@ -72,7 +72,7 @@ class ReachPolicy(Node, PolicyExecutor):
         )
         self.joint_command_timer = self.create_timer(self.cfg.step_size, self.timer_callback)
 
-        self.get_logger().info("ReachPolicy node initialized.")
+        self.get_logger().info("OMYReachPolicy node initialized.")
 
     def joint_state_callback(self, msg: JointTrajectoryControllerState):
         """Callback to update current joint state from the controller feedback."""
@@ -167,7 +167,7 @@ def main(args=None):
     parsed_args, remaining_args = parser.parse_known_args(args)
 
     rclpy.init(args=remaining_args)
-    node = ReachPolicy(model_dir=parsed_args.model_dir)
+    node = OMYReachPolicy(model_dir=parsed_args.model_dir)
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
