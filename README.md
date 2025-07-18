@@ -151,5 +151,5 @@ python scripts/imitation_learning/robomimic/train.py \
 # Play
 python scripts/imitation_learning/robomimic/play.py \
 --device cuda --task RobotisLab-PickPlace-FFW-BG2-IK-Rel-v0  --num_rollouts 50 \
---checkpoint /PATH/TO/desired_model_checkpoint.pth
+--checkpoint /PATH/TO/desired_model_checkpoint.pth --enable_cameras
 ```
