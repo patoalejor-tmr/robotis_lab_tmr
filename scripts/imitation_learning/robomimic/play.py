@@ -71,13 +71,29 @@ if args_cli.enable_pinocchio:
 
 from isaaclab_tasks.utils import parse_env_cfg
 
+import numpy as np
 import robotis_lab  # noqa: F401
+
+def process_obs(obs):
+    """Preprocess observations: squeeze tensors, convert images from HWC to CHW and normalize"""
+    for ob in obs:
+        obs[ob] = torch.squeeze(obs[ob])
+    for image_name in ["head_cam", "right_wrist_cam"]:
+        if image_name in obs:
+            image = obs[image_name]
+            if isinstance(image, np.ndarray):
+                image = torch.from_numpy(image)
+            if image.dim() == 3 and image.shape[-1] == 3:
+                image = image.permute(2, 0, 1)  # HWC → CHW
+            image = image.float() / 255.0
+            obs[image_name] = image.contiguous()
+    return obs
 
 def rollout(policy, env, success_term, horizon, device):
     """Perform a single rollout of the policy in the environment.
 
     Args:
-        policy: The robomimicpolicy to play.
+        policy: The robomimic policy to play.
         env: The environment to play in.
         horizon: The step horizon of each rollout.
         device: The device to run the policy on.
@@ -93,20 +109,11 @@ def rollout(policy, env, success_term, horizon, device):
     for i in range(horizon):
         # Prepare observations
         obs = copy.deepcopy(obs_dict["policy"])
-        for ob in obs:
-            obs[ob] = torch.squeeze(obs[ob])
+        obs = process_obs(obs)
 
-        # Check if environment image observations
-        if hasattr(env.cfg, "image_obs_list"):
-            # Process image observations for robomimic inference
-            for image_name in env.cfg.image_obs_list:
-                if image_name in obs_dict["policy"].keys():
-                    # Convert from chw uint8 to hwc normalized float
-                    image = torch.squeeze(obs_dict["policy"][image_name])
-                    image = image.permute(2, 0, 1).clone().float()
-                    image = image / 255.0
-                    image = image.clip(0.0, 1.0)
-                    obs[image_name] = image
+        print("\n\n=== OBS SHAPE DEBUG ===")
+        for k, v in obs.items():
+            print(f"{k}: {v.shape}")
 
         traj["obs"].append(obs)
 
@@ -123,11 +130,11 @@ def rollout(policy, env, success_term, horizon, device):
 
         # Apply actions
         obs_dict, _, terminated, truncated, _ = env.step(actions)
-        obs = obs_dict["policy"]
 
-        # Record trajectory
-        traj["actions"].append(actions.tolist())
-        traj["next_obs"].append(obs)
+        # Preprocess and store the next observation
+        next_obs = copy.deepcopy(obs_dict["policy"])
+        next_obs = process_obs(next_obs)
+        traj["next_obs"].append(next_obs)
 
         # Check if rollout was successful
         if bool(success_term.func(env, **success_term.params)[0]):
@@ -136,7 +143,6 @@ def rollout(policy, env, success_term, horizon, device):
             return False, traj
 
     return False, traj
-
 
 def main():
     """Run a trained policy from robomimic with Isaac Lab environment."""

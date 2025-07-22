@@ -86,7 +86,12 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
             "arm_r_joint1", "arm_r_joint2", "arm_r_joint3", "arm_r_joint4",
             "arm_r_joint5", "arm_r_joint6", "arm_r_joint7"
         ]
-
+        self.observations.policy.joint_pos.params["asset_cfg"] = SceneEntityCfg(
+            name="robot", joint_names=arm_joint_names
+        )
+        self.observations.policy.joint_vel.params["asset_cfg"] = SceneEntityCfg(
+            name="robot", joint_names=arm_joint_names
+        )
         # Set actions for the specific robot type (FFW_BG2)
         self.actions.arm_action = mdp.JointPositionActionCfg(
             asset_name="robot", joint_names=arm_joint_names, scale=0.5, use_default_offset=True
@@ -100,8 +105,8 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
         self.scene.right_wrist_cam = CameraCfg(
             prim_path="{ENV_REGEX_NS}/Robot/ffw_bg2_follower/arm_r_link7/camera_r_bottom_screw_frame/camera_r_link/right_wrist_cam",
             update_period=0.0,
-            height=224,
-            width=224,
+            height=244,
+            width=244,
             data_types=["rgb"],
             spawn=sim_utils.PinholeCameraCfg(
                 focal_length=18.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
@@ -113,8 +118,8 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
         self.scene.head_cam = CameraCfg(
             prim_path="{ENV_REGEX_NS}/Robot/ffw_bg2_follower/head_link2/head_cam",
             update_period=0.0,
-            height=224,
-            width=224,
+            height=244,
+            width=244,
             data_types=["rgb", "distance_to_image_plane"],
             spawn=sim_utils.PinholeCameraCfg(
                 focal_length=12.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
