@@ -23,7 +23,7 @@ import rclpy
 from rclpy.node import Node
 
 from builtin_interfaces.msg import Duration
-from control_msgs.msg import JointTrajectoryControllerState
+from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from geometry_msgs.msg import TransformStamped
 from tf2_ros import TransformBroadcaster
@@ -50,17 +50,18 @@ class OMYReachPolicy(Node, PolicyExecutor):
         self.iteration = 0
         self.has_joint_data = False
 
-        self.num_joints = len(self.cfg.joint_names)
+        self.action_scale = self.get_action_scale()
+        self.joint_names = self.get_observation_joint_names()
+        self.default_pos = self.get_default_joint_positions(self.joint_names)
+
         self.target_command = np.zeros(7)  # [x, y, z, qw, qx, qy, qz]
+        self.num_joints = len(self.joint_names)
         self.previous_action = np.zeros(self.num_joints)
         self.current_joint_positions = np.zeros(self.num_joints)
         self.current_joint_velocities = np.zeros(self.num_joints)
 
-        self.action_scale = self.get_action_scale()
-        self.default_pos = self.get_default_joint_positions(self.cfg.joint_names)
-
         self.joint_state_subscriber = self.create_subscription(
-            JointTrajectoryControllerState,
+            JointState,
             self.cfg.joint_state_topic,
             self.joint_state_callback,
             10
@@ -74,10 +75,22 @@ class OMYReachPolicy(Node, PolicyExecutor):
 
         self.get_logger().info("OMYReachPolicy node initialized.")
 
-    def joint_state_callback(self, msg: JointTrajectoryControllerState):
-        """Callback to update current joint state from the controller feedback."""
-        self.current_joint_positions = np.array(msg.feedback.positions[:self.num_joints], dtype=np.float32)
-        self.current_joint_velocities = np.array(msg.feedback.velocities[:self.num_joints], dtype=np.float32)
+    def joint_state_callback(self, msg: JointState):
+        """Update current joint state using only joints that exist in the message."""
+        name_to_index = {name: i for i, name in enumerate(msg.name)}
+
+        positions = []
+        velocities = []
+        for name in self.joint_names:
+            if name in name_to_index:
+                idx = name_to_index[name]
+                positions.append(msg.position[idx])
+                velocities.append(msg.velocity[idx] if idx < len(msg.velocity) else 0.0)
+            else:
+                self.get_logger().warn(f"Joint {name} not found in JointState message. Skipping.")
+
+        self.current_joint_positions = np.array(positions, dtype=np.float32)
+        self.current_joint_velocities = np.array(velocities, dtype=np.float32)
         self.has_joint_data = True
 
     def timer_callback(self):
@@ -115,7 +128,7 @@ class OMYReachPolicy(Node, PolicyExecutor):
         )
 
         joint_trajectory = JointTrajectory()
-        joint_trajectory.joint_names = self.cfg.joint_names
+        joint_trajectory.joint_names = self.joint_names
         joint_trajectory.points.append(point)
         return joint_trajectory
 

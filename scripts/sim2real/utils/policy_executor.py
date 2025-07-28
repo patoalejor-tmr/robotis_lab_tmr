@@ -16,9 +16,8 @@
 #
 # Author: Taehyeong Kim
 
-from ruamel.yaml import YAML
+import yaml
 import os
-import io
 import numpy as np
 import torch
 
@@ -29,11 +28,11 @@ class PolicyExecutor():
         self.yaml_data: dict | None = None
 
     def load_policy_yaml(self, policy_yaml_path: str) -> None:
-        if not os.path.exists(policy_yaml_path):
-            raise FileNotFoundError(f"YAML file not found: {policy_yaml_path}")
-        yaml = YAML()
-        with open(policy_yaml_path, 'r') as f:
-            self.yaml_data = yaml.load(f)
+        if os.path.exists(policy_yaml_path) and not os.path.isfile(policy_yaml_path):
+            return None
+        with open(policy_yaml_path, 'r') as file:
+            data = yaml.load(file, Loader=yaml.UnsafeLoader)
+            self.yaml_data = data
 
     def get_yaml_data(self, key_path: str, default=None):
         if self.yaml_data is None:
@@ -82,3 +81,9 @@ class PolicyExecutor():
             raise KeyError(f"Joint name {e} not found in YAML joint_pos dict.")
 
         return joint_pos_array
+
+    def get_observation_joint_names(self) -> list:
+        """Get the observation joint names from the YAML configuration."""
+        if self.yaml_data is None:
+            raise ValueError("YAML not loaded. Call `load_policy_yaml()` first.")
+        return self.get_yaml_data("observations.policy.joint_pos.params.asset_cfg.joint_names", [])
