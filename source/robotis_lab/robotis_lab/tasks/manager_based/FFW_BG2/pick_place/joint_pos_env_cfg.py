@@ -59,6 +59,7 @@ class EventCfg:
         },
     )
 
+
 @configclass
 class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
     """Configuration for the FFW_BG2 environment."""

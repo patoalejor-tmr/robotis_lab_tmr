@@ -67,7 +67,7 @@ class PolicyExecutor():
         """Get the default joint positions from the YAML configuration for given joint names."""
         if self.yaml_data is None:
             raise ValueError("YAML not loaded. Call `load_policy_yaml()` first.")
-        
+
         default_joint_yaml = self.get_yaml_data("scene.robot.init_state.joint_pos", None)
         if default_joint_yaml is None:
             raise ValueError("Default joint positions not found in YAML.")

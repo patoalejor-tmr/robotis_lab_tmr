@@ -98,7 +98,7 @@ class OMYReachPolicy(Node, PolicyExecutor):
         if not self.has_joint_data:
             return
 
-        command_interval = int(self.cfg.send_command_interval / self.cfg.step_size) # interval in steps
+        command_interval = int(self.cfg.send_command_interval / self.cfg.step_size)  # interval in steps
         phase = self.iteration % (2 * command_interval)
 
         if phase == 0:
@@ -169,6 +169,7 @@ class OMYReachPolicy(Node, PolicyExecutor):
 
         return joint_positions
 
+
 def main(args=None):
     """Entry point to initialize ROS2 and run the reach policy node."""
     parser = argparse.ArgumentParser()
@@ -184,6 +185,7 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
