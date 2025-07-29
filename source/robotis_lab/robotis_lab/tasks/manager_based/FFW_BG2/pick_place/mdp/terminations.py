@@ -73,11 +73,11 @@ def task_done(
     # Get object entity from the scene
     object: RigidObject = env.scene[object_cfg.name]
 
-    # Extract wheel position relative to environment origin
-    wheel_x = object.data.root_pos_w[:, 0] - env.scene.env_origins[:, 0]
-    wheel_y = object.data.root_pos_w[:, 1] - env.scene.env_origins[:, 1]
-    wheel_height = object.data.root_pos_w[:, 2] - env.scene.env_origins[:, 2]
-    wheel_vel = torch.abs(object.data.root_vel_w)
+    # Extract object position (e.g., cylindrical rod) relative to environment origin
+    object_x = object.data.root_pos_w[:, 0] - env.scene.env_origins[:, 0]
+    object_y = object.data.root_pos_w[:, 1] - env.scene.env_origins[:, 1]
+    object_height = object.data.root_pos_w[:, 2] - env.scene.env_origins[:, 2]
+    object_vel = torch.abs(object.data.root_vel_w)
 
     # Get right wrist position relative to environment origin
     robot_body_pos_w = env.scene["robot"].data.body_pos_w
@@ -85,15 +85,15 @@ def task_done(
     right_wrist_x = robot_body_pos_w[:, right_eef_idx, 0] - env.scene.env_origins[:, 0]
 
     # Check all success conditions and combine with logical AND
-    done = wheel_x < max_x
-    done = torch.logical_and(done, wheel_x > min_x)
-    done = torch.logical_and(done, wheel_y < max_y)
-    done = torch.logical_and(done, wheel_y > min_y)
-    done = torch.logical_and(done, wheel_height < min_height)
+    done = object_x < max_x
+    done = torch.logical_and(done, object_x > min_x)
+    done = torch.logical_and(done, object_y < max_y)
+    done = torch.logical_and(done, object_y > min_y)
+    done = torch.logical_and(done, object_height < min_height)
     done = torch.logical_and(done, right_wrist_x < right_wrist_max_x)
-    done = torch.logical_and(done, wheel_vel[:, 0] < min_vel)
-    done = torch.logical_and(done, wheel_vel[:, 1] < min_vel)
-    done = torch.logical_and(done, wheel_vel[:, 2] < min_vel)
+    done = torch.logical_and(done, object_vel[:, 0] < min_vel)
+    done = torch.logical_and(done, object_vel[:, 1] < min_vel)
+    done = torch.logical_and(done, object_vel[:, 2] < min_vel)
 
     return done
 
@@ -108,12 +108,12 @@ def object_fallen_over(
     # Get object entity from the scene
     object: RigidObject = env.scene[object_cfg.name]
 
-    # Extract wheel position relative to environment origin
-    wheel_y = object.data.root_pos_w[:, 1] - env.scene.env_origins[:, 1]
-    wheel_height = object.data.root_pos_w[:, 2] - env.scene.env_origins[:, 2]
+    # Extract object position relative to environment origin
+    object_y = object.data.root_pos_w[:, 1] - env.scene.env_origins[:, 1]
+    object_height = object.data.root_pos_w[:, 2] - env.scene.env_origins[:, 2]
 
     # Check all success conditions and combine with logical AND
-    fail = wheel_y > max_y
-    fail = torch.logical_and(fail, wheel_height < min_height)
+    fail = object_y > max_y
+    fail = torch.logical_and(fail, object_height < min_height)
 
     return fail

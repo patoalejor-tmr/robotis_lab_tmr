@@ -51,7 +51,7 @@ class PickPlaceFFWBG2MimicEnvCfg(PickPlaceFFWBG2EnvCfg, MimicEnvCfg):
         self.datagen_config.num_fail_demo_to_render = 25
         self.datagen_config.seed = 1
 
-        # The following are the subtask configurations for the stack task.
+        # The following are the subtask configurations for the pick-and-place task.
         subtask_configs = []
         subtask_configs.append(
             SubTaskConfig(
