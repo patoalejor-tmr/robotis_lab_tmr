@@ -106,8 +106,8 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
         self.scene.right_wrist_cam = CameraCfg(
             prim_path="{ENV_REGEX_NS}/Robot/ffw_bg2_follower/arm_r_link7/camera_r_bottom_screw_frame/camera_r_link/right_wrist_cam",
             update_period=0.0,
-            height=244,
-            width=244,
+            height=224,
+            width=224,
             data_types=["rgb"],
             spawn=sim_utils.PinholeCameraCfg(
                 focal_length=18.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
@@ -119,8 +119,8 @@ class PickPlaceFFWBG2EnvCfg(PickPlaceEnvCfg):
         self.scene.head_cam = CameraCfg(
             prim_path="{ENV_REGEX_NS}/Robot/ffw_bg2_follower/head_link2/head_cam",
             update_period=0.0,
-            height=244,
-            width=244,
+            height=224,
+            width=224,
             data_types=["rgb", "distance_to_image_plane"],
             spawn=sim_utils.PinholeCameraCfg(
                 focal_length=12.0, focus_distance=400.0, horizontal_aperture=20.955, clipping_range=(0.1, 2)
