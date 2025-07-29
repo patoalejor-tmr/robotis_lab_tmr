@@ -28,9 +28,11 @@ class PolicyExecutor():
         self.yaml_data: dict | None = None
 
     def load_policy_yaml(self, policy_yaml_path: str) -> None:
-        if os.path.exists(policy_yaml_path) and not os.path.isfile(policy_yaml_path):
-            return None
+        if not os.path.isfile(policy_yaml_path):
+            raise FileNotFoundError(f"Policy YAML file not found or is a directory: {policy_yaml_path}")
         with open(policy_yaml_path, 'r') as file:
+            # WARNING: UnsafeLoader can execute arbitrary code and is a security risk.
+            # Only use with trusted YAML files. Prefer SafeLoader if possible.
             data = yaml.load(file, Loader=yaml.UnsafeLoader)
             self.yaml_data = data
 

@@ -39,12 +39,12 @@ from isaaclab.markers.config import FRAME_MARKER_CFG  # isort: skip
 class EventCfg:
     """Configuration for events."""
 
-    init_ffw_bg2_pose = EventTerm(
+    init_ffw_bg2_pose_on_startup = EventTerm(
         func=ffw_bg2_pick_place_events.set_joint_pose_from_cfg,
         mode="startup",
     )
 
-    init_ffw_bg2_pose = EventTerm(
+    init_ffw_bg2_pose_on_reset = EventTerm(
         func=ffw_bg2_pick_place_events.set_joint_pose_from_cfg,
         mode="reset",
     )
