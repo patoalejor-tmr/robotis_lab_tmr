@@ -19,10 +19,10 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Common functions that can be used to activate certain terminations for the lift task.
-
+"""
+Common functions that can be used to activate certain terminations for the pick-and-place task.
 The functions can be passed to the :class:`isaaclab.managers.TerminationTermCfg` object to enable
-the termination introduced by the function.
+the termination conditions introduced by the function.
 """
 
 from __future__ import annotations

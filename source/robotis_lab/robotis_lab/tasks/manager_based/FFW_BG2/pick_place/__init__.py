@@ -44,7 +44,7 @@ gym.register(
     id="RobotisLab-PickPlace-FFW-BG2-Mimic-v0",
     entry_point="robotis_lab.tasks.manager_based.FFW_BG2.pick_place:PickPlaceFFWBG2MimicEnv",
     kwargs={
-        "env_cfg_entry_point": mimic_env_cfg.PickPlaceFFWBG2MimicEnvCfg,
+        "env_cfg_entry_point": PickPlaceFFWBG2MimicEnvCfg,
     },
     disable_env_checker=True,
 )
