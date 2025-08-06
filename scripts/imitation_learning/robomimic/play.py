@@ -98,11 +98,11 @@ def rollout(policy, env, success_term, horizon, device):
             obs[ob] = torch.squeeze(obs[ob])
 
         # Identify image keys from env.cfg
-        image_keys = []
-        for name, term_cfg in env.cfg.observations.policy.__dict__.items():
-            if hasattr(term_cfg, "func") and term_cfg.func.__name__ == "image":
-                if term_cfg.params.get("data_type") == "rgb":
-                    image_keys.append(name)
+        image_keys = [
+            name
+            for name, term_cfg in vars(env.cfg.observations.policy).items()
+            if hasattr(term_cfg, "func") and term_cfg.func.__name__ == "image" and term_cfg.params.get("data_type") == "rgb"
+        ]
 
         # Process image observations
         for key in image_keys:
