@@ -78,19 +78,16 @@ class OMYReachPolicy(Node, PolicyExecutor):
     def joint_state_callback(self, msg: JointState):
         """Update current joint state using only joints that exist in the message."""
         name_to_index = {name: i for i, name in enumerate(msg.name)}
-
-        positions = []
-        velocities = []
-        for name in self.joint_names:
+        for i, name in enumerate(self.joint_names):
             if name in name_to_index:
                 idx = name_to_index[name]
-                positions.append(msg.position[idx])
-                velocities.append(msg.velocity[idx] if idx < len(msg.velocity) else 0.0)
+                self.current_joint_positions[i] = msg.position[idx]
+                if idx < len(msg.velocity):
+                    self.current_joint_velocities[i] = msg.velocity[idx]
+                else:
+                    self.current_joint_velocities[i] = 0.0
             else:
-                self.get_logger().warn(f"Joint {name} not found in JointState message. Skipping.")
-
-        self.current_joint_positions = np.array(positions, dtype=np.float32)
-        self.current_joint_velocities = np.array(velocities, dtype=np.float32)
+                self.get_logger().warn(f"Joint '{name}' not found in JointState message. Using previous value.")
         self.has_joint_data = True
 
     def timer_callback(self):
