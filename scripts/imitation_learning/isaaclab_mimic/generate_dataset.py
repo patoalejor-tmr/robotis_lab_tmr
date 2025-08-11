@@ -77,6 +77,7 @@ import isaaclab_tasks  # noqa: F401
 
 import robotis_lab  # noqa: F401
 
+
 def main():
     num_envs = args_cli.num_envs
 

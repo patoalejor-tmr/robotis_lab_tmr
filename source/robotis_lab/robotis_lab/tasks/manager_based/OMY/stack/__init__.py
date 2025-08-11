@@ -27,6 +27,9 @@ from . import (
     ik_rel_env_cfg,
 )
 
+from .mimic_env import OMYStackMimicEnv
+from .mimic_env_cfg import OMYStackMimicEnvCfg
+
 ##
 # Inverse Kinematics - Relative Pose Control
 ##
@@ -37,6 +40,15 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": ik_rel_env_cfg.OMYCubeStackEnvCfg,
         "robomimic_bc_cfg_entry_point": os.path.join(agents.__path__[0], "robomimic/bc_rnn_low_dim.json"),
+    },
+    disable_env_checker=True,
+)
+
+gym.register(
+    id="RobotisLab-Stack-Cube-OMY-IK-Rel-Mimic-v0",
+    entry_point="robotis_lab.tasks.manager_based.OMY.stack:OMYStackMimicEnv",
+    kwargs={
+        "env_cfg_entry_point": mimic_env_cfg.OMYStackMimicEnvCfg,
     },
     disable_env_checker=True,
 )

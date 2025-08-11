@@ -1,5 +1,19 @@
 # Robotis Lab Release Notes
 
+0.1.2 (2025-07-29)
+FFW BG2 Pick-and-Place Imitation Learning Environment
+Built an imitation learning environment for cylindrical rod pick-and-place using the FFW BG2 robot.
+
+* Implemented the full pipeline:
+    * Data recording
+    * Sub-task annotation
+    * Data augmentation
+    * Training
+
+Enabled observation input support for right_wrist_cam and head_cam.
+Fixed the issue with OMY STACK task not functioning correctly.
+Performed parameter tuning and code cleanup for OMY Reach task's Sim2Real code (no functional issues, just improvements).
+
 0.1.1 (2025-07-16)
 ------------------
 ### Sim2Real Deployment Support Added

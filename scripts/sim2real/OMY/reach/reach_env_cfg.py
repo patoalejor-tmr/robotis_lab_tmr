@@ -24,12 +24,11 @@ from pathlib import Path
 
 class ReachEnvConfig:
     def __init__(self, model_dir: str):
-        self.joint_names = [f"joint{i}" for i in range(1, 7)]
         self.step_size = 1.0 / 1000  # 1000Hz
-        self.trajectory_time_from_start = 1.0/20.0 # seconds
-        self.send_command_interval = 3.0 # seconds
+        self.trajectory_time_from_start = 1.0 / 20.0  # seconds
+        self.send_command_interval = 3.0  # seconds
 
-        self.joint_state_topic = "/arm_controller/controller_state"
+        self.joint_state_topic = "/joint_states"
         self.joint_trajectory_topic = "/arm_controller/joint_trajectory"
 
         repo_root = Path(__file__).resolve().parents[4]
@@ -43,4 +42,4 @@ class ReachEnvConfig:
         pitch = 0.0 
         yaw = np.random.uniform(math.pi / 4, math.pi * 3 / 4)
         quat = Rotation.from_euler("zyx", [yaw, pitch, roll]).as_quat()  # [x, y, z, w]
-        return np.concatenate([pos, [quat[3], quat[0], quat[1], quat[2]]]) # [x, y, z, qw, qx, qy, qz]
+        return np.concatenate([pos, [quat[3], quat[0], quat[1], quat[2]]])  # [x, y, z, qw, qx, qy, qz]

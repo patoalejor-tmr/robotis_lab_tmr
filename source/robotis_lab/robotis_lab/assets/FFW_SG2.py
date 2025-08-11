@@ -45,13 +45,13 @@ FFW_SG2_CFG = ArticulationCfg(
             "lift_joint": 0.0,
 
             # Left arm joints
-            **{f"arm_l_joint{i+1}": 0.0 for i in range(7)},
+            **{f"arm_l_joint{i + 1}": 0.0 for i in range(7)},
             # Right arm joints
-            **{f"arm_r_joint{i+1}": 0.0 for i in range(7)},
+            **{f"arm_r_joint{i + 1}": 0.0 for i in range(7)},
 
             # Left and right gripper joints
-            **{f"gripper_l_joint{i+1}": 0.0 for i in range(4)},
-            **{f"gripper_r_joint{i+1}": 0.0 for i in range(4)},
+            **{f"gripper_l_joint{i + 1}": 0.0 for i in range(4)},
+            **{f"gripper_r_joint{i + 1}": 0.0 for i in range(4)},
 
             # Head joints
             "head_joint1": 0.0,

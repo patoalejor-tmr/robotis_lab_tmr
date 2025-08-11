@@ -19,7 +19,8 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""OMY environments for fixed-arm robots."""
+"""FFW_BG2 environments for fixed-arm robots."""
 
 import gymnasium as gym
 from .reach import *  # noqa
+from .pick_place import *  # noqa

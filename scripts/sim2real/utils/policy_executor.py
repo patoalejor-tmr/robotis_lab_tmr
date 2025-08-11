@@ -16,9 +16,8 @@
 #
 # Author: Taehyeong Kim
 
-from ruamel.yaml import YAML
+import yaml
 import os
-import io
 import numpy as np
 import torch
 
@@ -29,11 +28,13 @@ class PolicyExecutor():
         self.yaml_data: dict | None = None
 
     def load_policy_yaml(self, policy_yaml_path: str) -> None:
-        if not os.path.exists(policy_yaml_path):
-            raise FileNotFoundError(f"YAML file not found: {policy_yaml_path}")
-        yaml = YAML()
-        with open(policy_yaml_path, 'r') as f:
-            self.yaml_data = yaml.load(f)
+        if not os.path.isfile(policy_yaml_path):
+            raise FileNotFoundError(f"Policy YAML file not found or is a directory: {policy_yaml_path}")
+        with open(policy_yaml_path, 'r') as file:
+            # WARNING: UnsafeLoader can execute arbitrary code and is a security risk.
+            # Only use with trusted YAML files. Prefer SafeLoader if possible.
+            data = yaml.load(file, Loader=yaml.UnsafeLoader)
+            self.yaml_data = data
 
     def get_yaml_data(self, key_path: str, default=None):
         if self.yaml_data is None:
@@ -68,7 +69,7 @@ class PolicyExecutor():
         """Get the default joint positions from the YAML configuration for given joint names."""
         if self.yaml_data is None:
             raise ValueError("YAML not loaded. Call `load_policy_yaml()` first.")
-        
+
         default_joint_yaml = self.get_yaml_data("scene.robot.init_state.joint_pos", None)
         if default_joint_yaml is None:
             raise ValueError("Default joint positions not found in YAML.")
@@ -82,3 +83,9 @@ class PolicyExecutor():
             raise KeyError(f"Joint name {e} not found in YAML joint_pos dict.")
 
         return joint_pos_array
+
+    def get_observation_joint_names(self) -> list:
+        """Get the observation joint names from the YAML configuration."""
+        if self.yaml_data is None:
+            raise ValueError("YAML not loaded. Call `load_policy_yaml()` first.")
+        return self.get_yaml_data("observations.policy.joint_pos.params.asset_cfg.joint_names", [])

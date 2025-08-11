@@ -66,7 +66,8 @@ import isaaclab_tasks  # noqa: F401
 from isaaclab_tasks.manager_based.manipulation.lift import mdp
 from isaaclab_tasks.utils import parse_env_cfg
 
-import robotis_lab # noqa: F401
+import robotis_lab  # noqa: F401
+
 
 def pre_process_actions(
     teleop_data: tuple[np.ndarray, bool] | list[tuple[np.ndarray, np.ndarray, np.ndarray]], num_envs: int, device: str

@@ -71,6 +71,7 @@ from isaaclab_tasks.utils import get_checkpoint_path, load_cfg_from_registry, pa
 
 import robotis_lab  # noqa: F401
 
+
 def main():
     """Play with RL-Games agent."""
     task_name = args_cli.task.split(":")[-1]

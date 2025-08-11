@@ -73,6 +73,7 @@ from isaaclab_tasks.utils import parse_env_cfg
 
 import robotis_lab  # noqa: F401
 
+
 def rollout(policy, env, success_term, horizon, device):
     """Perform a single rollout of the policy in the environment.
 
@@ -96,17 +97,22 @@ def rollout(policy, env, success_term, horizon, device):
         for ob in obs:
             obs[ob] = torch.squeeze(obs[ob])
 
-        # Check if environment image observations
-        if hasattr(env.cfg, "image_obs_list"):
-            # Process image observations for robomimic inference
-            for image_name in env.cfg.image_obs_list:
-                if image_name in obs_dict["policy"].keys():
-                    # Convert from chw uint8 to hwc normalized float
-                    image = torch.squeeze(obs_dict["policy"][image_name])
-                    image = image.permute(2, 0, 1).clone().float()
-                    image = image / 255.0
-                    image = image.clip(0.0, 1.0)
-                    obs[image_name] = image
+        # Identify image keys from env.cfg
+        image_keys = [
+            name
+            for name, term_cfg in vars(env.cfg.observations.policy).items()
+            if hasattr(term_cfg, "func") and term_cfg.func.__name__ == "image" and term_cfg.params.get("data_type") == "rgb"
+        ]
+
+        # Process image observations
+        for key in image_keys:
+            if key in obs_dict["policy"].keys():
+                # Convert from chw uint8 to hwc normalized float
+                image = torch.squeeze(obs_dict["policy"][key])
+                image = image.permute(2, 0, 1).clone().float()
+                image = image / 255.0
+                image = image.clip(0.0, 1.0)
+                obs[key] = image
 
         traj["obs"].append(obs)
 

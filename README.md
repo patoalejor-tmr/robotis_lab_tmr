@@ -129,6 +129,31 @@ python scripts/imitation_learning/robomimic/play.py \
 --checkpoint /PATH/TO/desired_model_checkpoint.pth
 ```
 
+FFW-BG2 Pick and Place Task (Move the red stick into the basket.)
+
+```bash
+# Teleop
+python scripts/tools/record_demos.py --task RobotisLab-PickPlace-FFW-BG2-IK-Rel-v0 --teleop_device keyboard --dataset_file ./datasets/dataset.hdf5 --num_demos 10 --enable_cameras
+
+# Annotate
+python scripts/imitation_learning/isaaclab_mimic/annotate_demos.py --device cuda --task RobotisLab-PickPlace-FFW-BG2-Mimic-v0 --input_file ./datasets/dataset.hdf5 --output_file ./datasets/annotated_dataset.hdf5 --enable_cameras
+
+# Mimic data
+python scripts/imitation_learning/isaaclab_mimic/generate_dataset.py \
+--device cuda --num_envs 20 --generation_num_trials 300 \
+--input_file ./datasets/annotated_dataset.hdf5 --output_file ./datasets/generated_dataset.hdf5 --enable_cameras --headless
+
+# Train
+python scripts/imitation_learning/robomimic/train.py \
+--task RobotisLab-PickPlace-FFW-BG2-IK-Rel-v0 --algo bc \
+--dataset ./datasets/generated_dataset.hdf5
+
+# Play
+python scripts/imitation_learning/robomimic/play.py \
+--device cuda --task RobotisLab-PickPlace-FFW-BG2-IK-Rel-v0  --num_rollouts 50 \
+--checkpoint /PATH/TO/desired_model_checkpoint.pth --enable_cameras
+```
+
 ## Sim2Real Deployment
 We provide a Sim2Real pipeline to deploy policies trained in Isaac Lab simulation directly onto the real OMY robot.
 
